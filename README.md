@@ -1,4 +1,4 @@
-# mocker
+# apmock
 
 A set of tools to mock LSST raw/calibration and catalog files to test
 using mock L1 Processing.
