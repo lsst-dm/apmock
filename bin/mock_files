@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+
+from mocker import filemaker
+from mocker import mock_tools as mtools
+
+
+def cmdline():
+
+    import argparse
+
+    # Make conf_parser that hold values from a config.ini file
+    conf_parser,defaults = mtools.build_conf_parser(verb=False)
+    parser = argparse.ArgumentParser(description="Creates set of mock files to benchmark specs for L1 Prompt Processing",
+                                     parents=[conf_parser])
+
+    # The command-line arguments
+    parser.add_argument("--naxis1", action="store",default=4096, type=int,
+                        help="NAXIS1 Dimension")
+    parser.add_argument("--naxis2", action="store",default=4096, type=int,
+                        help="NAXIS2 Dimension")
+    parser.add_argument("--bands", action="store",default=['r'], nargs='+',
+                        help="List of bands to create")
+    parser.add_argument("--nite", action="store",default='19691231', 
+                        help="Date String for raws")
+    parser.add_argument("--ccds", action="store",default='all',
+                        help="List of CCDs to build")
+    parser.add_argument("--nccds", action="store",default=189, type=int,
+                        help="Number of CCDs to build")
+    parser.add_argument("--expnum", action="store",default=1, type=int,
+                        help="First exposure number used to build for raw files")
+    parser.add_argument("--nexp", action="store",default=2, type=int,
+                        help="Number of exposures per visit")
+
+    parser.set_defaults(**defaults)
+    args = parser.parse_args()
+
+    # Sanity checks for ccds to be integers
+    # If ccds is not a list:
+    if args.ccds == 'all':
+        args.ccds = [k+1 for k in range(args.nccds)]
+    else:
+        args.ccds = [int(ccd) for ccd in args.ccds]
+    
+    return args
+
+if __name__ == "__main__":
+
+    args = cmdline()
+    kw = vars(args)
+
+    maker = filemaker.IMAGEMAKER(**kw)
+    maker.make('bpm','int32',extnames=['BPM'])
+    maker.make('bias','float32',extnames=['SCI','WGT'])
+    for band in args.bands:
+        maker.make('flat','float32',band=band,extnames=['SCI','WGT'])
+        maker.make('template','float32',band=band, extnames=['SCI','WGT'])
+        for visit in range(args.nexp):
+            maker.make('raw','int32',band=band,extnames=['SCI'])
+
+
