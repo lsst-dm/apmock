@@ -43,9 +43,9 @@ FILENAME = {
 
 # Get the location where the code is installed
 try:
-    MOCKER_DIR = os.path.join(os.environ['MOCKER_DIR'])
+    APMOCK_DIR = os.path.join(os.environ['APMOCK_DIR'])
 except:
-    MOCKER_DIR = __file__.split("/python/")[0]
+    APMOCK_DIR = __file__.split("/python/")[0]
 
 
 def get_headers_hdus(filename):

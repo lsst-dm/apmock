@@ -23,7 +23,7 @@ class IMAGEMAKER(object):
         self.FILENAME = mock_tools.FILENAME
 
         # Load default location
-        self.MOCKER_DIR = mock_tools.MOCKER_DIR
+        self.APMOCK_DIR = mock_tools.APMOCK_DIR
         
         # Unpack the dictionary of **keys into variables
         # self.keyname = key['keyname']
@@ -37,7 +37,7 @@ class IMAGEMAKER(object):
                 self.FILENAME[key] = keys.get('%s_FILENAME' % key.upper())
 
         # Get the generic headers for CCD/TEL
-        self.header =  self.read_generic_headers(self.MOCKER_DIR)
+        self.header =  self.read_generic_headers(self.APMOCK_DIR)
 
     def make(self,filetype,btype,extnames=['SCI',],band='',**keys):
 

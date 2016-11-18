@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from mocker import filemaker
-from mocker import mock_tools as mtools
-from mocker import steps_ap
+from apmock import filemaker
+from apmock import mock_tools as mtools
+from apmock import steps_ap
 from datetime import datetime
 import time
 
