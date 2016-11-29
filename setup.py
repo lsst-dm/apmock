@@ -6,7 +6,7 @@ bin_files = glob.glob("bin/mock_files")
 bin_files = bin_files + glob.glob("bin/ap_pipe") 
 
 # The main call
-setup(name='mocker',
+setup(name='apmock',
       version ='0.1',
       license = "GPL",
       description = "Set of tools to mock files for LSST Alter Production",
