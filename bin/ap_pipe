@@ -73,7 +73,11 @@ if __name__ == "__main__":
     pipe = steps_ap.APmock(**kw)
 
     # Step 0
-    # Star the clock
+    # Start the clock
+    # MESSAGE NOTES: Before we start, we need to get some kind of 'GO'
+    # message to start the processing. That message should contain
+    # information such as: RA,DEC,band, exposure time, airmass, number
+    # of snaps, nite, filepath where raws will land, etc.
     pipe.begin_visit()
 
     # Step 1
@@ -84,12 +88,16 @@ if __name__ == "__main__":
     pipe.next('exposure')
     
     # Step 2 -- Copy raw 1 and process it
+    # MESSAGE NOTES: Wait until it get the signal/message stating that
+    # snap 1 is ready to be retrieved from the distributor.
     pipe.get_visit(1)
     pipe.run_step('isr')
     pipe.write_isr(1)
     pipe.next('exposure')
 
     # Step 3 -- Copy raw 2 and process it
+    # MESSAGE NOTES: Wait until it get the signal/message stating that
+    # snap 2 is ready to be retrieved from the distributor.
     pipe.get_visit(2)
     pipe.run_step('isr')
     pipe.write_isr(2)
@@ -115,3 +123,4 @@ if __name__ == "__main__":
     pipe.run_step('alert')
     pipe.write_catalog('diaalr')
 
+    # MESSAGE NOTES: Send message back to OCS with "ALL DONE" 
