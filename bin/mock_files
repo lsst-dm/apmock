@@ -29,6 +29,9 @@ def cmdline():
                         help="First exposure number used to build for raw files")
     parser.add_argument("--nexp", action="store",default=2, type=int,
                         help="Number of exposures per visit")
+    parser.add_argument("--rawint18", action="store_true",default=False,
+                        help="Mock raws as int18 inside a int32 container?")
+
 
     parser.set_defaults(**defaults)
     args = parser.parse_args()
@@ -48,6 +51,7 @@ if __name__ == "__main__":
     kw = vars(args)
 
     maker = filemaker.IMAGEMAKER(**kw)
+
     maker.make('bpm','int32',extnames=['BPM'])
     maker.make('bias','float32',extnames=['SCI','WGT'])
     for band in args.bands:

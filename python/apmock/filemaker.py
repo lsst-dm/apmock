@@ -70,6 +70,14 @@ class IMAGEMAKER(object):
                     n1 = int(self.naxis1*1.25)
                     n2 = int(self.naxis2*1.25)
                     im_ccd[extname] = numpy.random.random((n1,n2)).astype(btype)
+                # For raw we want to fill in only 18bits
+                elif filetype == 'raw' and self.rawint18:
+                    print "Populating raw to 2^18-1"
+                    im_ccd[extname] = numpy.random.uniform(1,2**18-1,size=(self.naxis1,self.naxis2)).astype(btype)
+                elif filetype == 'raw' and btype=='int32':
+                    im_ccd[extname] = numpy.random.uniform(1,2**32-1,size=(self.naxis1,self.naxis2)).astype(btype)
+                elif filetype == 'raw' and btype=='int16':
+                    im_ccd[extname] = numpy.random.uniform(1,2**16-1,size=(self.naxis1,self.naxis2)).astype(btype)
                 else:
                     im_ccd[extname] = numpy.random.random((self.naxis1,self.naxis2)).astype(btype)
                 ofits.write(im_ccd[extname],extname=extname,header=self.header['CCD'])
